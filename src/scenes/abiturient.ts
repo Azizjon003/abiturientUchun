@@ -3,7 +3,7 @@ import prisma from "../../prisma/prisma";
 import { checkUser } from "./../services/dtm.service";
 const scene = new Scenes.BaseScene("abiturient");
 
-scene.hears("/start", async (ctx: any) => {
+scene.hears(["/start", "Bosh menyu"], async (ctx: any) => {
   return await ctx.scene.enter("start");
 });
 
@@ -100,7 +100,9 @@ scene.on("message", async (ctx: any) => {
     general,
     userScore,
     count,
-    String(requests?.type) as any
+    String(requests?.type) as any,
+    userDatas[0].name,
+    userDatas[0].id
   );
 });
 
@@ -250,11 +252,13 @@ async function analyzeAndSendResults(
   data: UniversityData[],
   userScore: number,
   itemCount: number,
-  type: "grant" | "contract" = "grant"
+  type: "grant" | "contract" = "grant",
+  name: string,
+  id: string
 ): Promise<void> {
   let admissions = data;
 
-  let initialMessage = `🎓 Sizning balingiz: ${userScore}\n\n`;
+  let initialMessage = `🎓 Sizning balingiz: ${userScore} \n AbituriyentId: ${id}\n\n`;
 
   if (admissions.length > 0) {
     initialMessage += `Siz ${admissions.length} ta yo'nalishga ${

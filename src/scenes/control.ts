@@ -1,7 +1,7 @@
 import { Scenes } from "telegraf";
 const scene = new Scenes.BaseScene("control");
 
-scene.hears("/start", async (ctx: any) => {
+scene.hears(["/start", "Bosh menyu"], async (ctx: any) => {
   return await ctx.scene.enter("start");
 });
 
@@ -53,6 +53,12 @@ Omad tilaymiz! 🍀
     {
       parse_mode: "HTML",
     }
+  );
+});
+
+scene.hears("Mandatni tahlil qilish", async (ctx: any) => {
+  ctx.reply(
+    "Bu bo'lim hozircha faol emas.\n OTM larni tanlash boshlangandan keyin ishga tushadi bu bo'lim"
   );
 });
 

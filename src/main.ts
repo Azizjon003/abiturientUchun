@@ -85,6 +85,15 @@ bot.on("inline_query", async (ctx: any) => {
   // ]
   await ctx.answerInlineQuery(results);
 });
+bot.hears(
+  ["Grant", "Kontrakt", "Bosh Menyu", "⚖️ Kirish imkoniyatingizni baholash"],
+  async (ctx: any) => {
+    ctx.reply("Qayta /start buyrug'ini bosing");
+  }
+);
+bot.telegram.setMyCommands([
+  { command: "start", description: "Botni qayta ishga tushurish" },
+]);
 botStart(bot);
 
 process.on("uncaughtException", (error) => {

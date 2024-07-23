@@ -1,7 +1,9 @@
 import { Scenes } from "telegraf";
 import prisma from "../../prisma/prisma";
 const scene = new Scenes.BaseScene("type");
-
+scene.hears(["/start", "Bosh menyu"], async (ctx: any) => {
+  return await ctx.scene.enter("start");
+});
 scene.hears(["Grant", "Kontrakt"], async (ctx: any) => {
   const text = ctx.message.text?.trim();
   const user = await prisma.user.findFirst({
@@ -47,7 +49,14 @@ scene.hears(["Grant", "Kontrakt"], async (ctx: any) => {
     });
   }
   console.log(datas);
-  ctx.reply("🆔 Iltimos, AbituriyentId raqamingizni kiriting:");
+  ctx.reply(
+    "🆔 Iltimos, AbituriyentId raqamingizni kiriting:\nAbituriyentIdni my.uzbmb.uz  sahifasidan olishingiz mumkin bo'ladi",
+    {
+      reply_markup: {
+        keyboard: [[{ text: "Bosh menyu" }]],
+      },
+    }
+  );
 
   return await ctx.scene.enter("abiturient");
 });

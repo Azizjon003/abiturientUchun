@@ -2,7 +2,7 @@ import { Scenes } from "telegraf";
 import prisma from "../../prisma/prisma";
 const scene = new Scenes.BaseScene("universities");
 
-scene.hears("/start", async (ctx: any) => {
+scene.hears(["/start", "Bosh menyu"], async (ctx: any) => {
   return await ctx.scene.enter("start");
 });
 
