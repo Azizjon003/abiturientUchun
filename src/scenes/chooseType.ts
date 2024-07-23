@@ -54,6 +54,7 @@ scene.hears(["Grant", "Kontrakt"], async (ctx: any) => {
     {
       reply_markup: {
         keyboard: [[{ text: "Bosh menyu" }]],
+        resize_keyboard: true,
       },
     }
   );
