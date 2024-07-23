@@ -265,7 +265,7 @@ async function analyzeAndSendResults(
   if (admissions.length > 0) {
     initialMessage += `Siz ${itemCount} ta yo'nalishga ${
       type === "contract" ? "Kontrakt" : "Grant"
-    } asosida kirishingiz mumkin.\n`;
+    } asosida kirishingiz mumkin. 2023-yilgi mandat natijalari asosida\n`;
     await ctx.reply(initialMessage);
     await sendPaginatedResults(
       ctx,
