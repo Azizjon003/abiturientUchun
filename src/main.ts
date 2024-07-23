@@ -66,7 +66,7 @@ bot.on("inline_query", async (ctx: any) => {
       id: uni.id,
       title: uni.name,
       description: uni.name,
-      thumb_url: "https://i.postimg.cc/8Pkb3Hc7/photo-2024-07-23-13-45-26.jpg",
+      thumb_url: "https://i.ibb.co/94sDLmT/1685128981-abituriyent-main.jpg",
       input_message_content: {
         message_text: uni.name,
       },

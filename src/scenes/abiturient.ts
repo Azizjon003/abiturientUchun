@@ -102,7 +102,8 @@ scene.on("message", async (ctx: any) => {
     count,
     String(requests?.type) as any,
     userDatas[0].name,
-    userDatas[0].id
+    userDatas[0].id,
+    subjects
   );
 });
 
@@ -254,11 +255,12 @@ async function analyzeAndSendResults(
   itemCount: number,
   type: "grant" | "contract" = "grant",
   name: string,
-  id: string
+  id: string,
+  subjects: any
 ): Promise<void> {
   let admissions = data;
 
-  let initialMessage = `🎓 Sizning balingiz: ${userScore} \n AbituriyentId: ${id}\n\n`;
+  let initialMessage = `🎓 Sizning balingiz: ${userScore} \n AbituriyentId: ${id} \n 1-fan ${subjects.firstSubject} \n 2-fan ${subjects.secondSubject}\n\n`;
 
   if (admissions.length > 0) {
     initialMessage += `Siz ${admissions.length} ta yo'nalishga ${
