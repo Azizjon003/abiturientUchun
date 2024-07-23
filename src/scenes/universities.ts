@@ -11,7 +11,7 @@ scene.on("message", async (ctx: any) => {
   const userId = ctx.from.id;
   const user = await prisma.user.findFirst({
     where: {
-      id: userId,
+      telegram_id: String(userId),
     },
   });
 
@@ -40,22 +40,19 @@ scene.on("message", async (ctx: any) => {
 
   ctx.reply(
     `🎓 *${university.name}*\n` +
-      `📌 Endi abituriyent sifatida ro'yxatdan o'tishingiz kerak.\n` +
-      `🆔 Iltimos, AbituriyentId raqamingizni kiriting:`,
+      `📌 Endi abituriyent sifatida ro'yxatdan o'tgan bo'lishingiz kerak.\n` +
+      `Grant yoki kontrakt bo'yicha tanlovni tanlang:`,
     {
       parse_mode: "Markdown",
       reply_markup: {
-        keyboard: [[{ text: "🔙 Orqaga" }]],
+        keyboard: [[{ text: "Grant" }, { text: "Kontrakt" }]],
         resize_keyboard: true,
         one_time_keyboard: true,
       },
     }
   );
 
-  return await ctx.scene.enter("abiturient");
+  return await ctx.scene.enter("type");
 });
 
-scene.hears("Admin", async (ctx) => {
-  ctx.reply("Admin");
-});
 export default scene;

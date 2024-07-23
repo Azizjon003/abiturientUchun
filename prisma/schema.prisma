@@ -40,7 +40,10 @@ model request {
   user User @relation(fields: [user_id], references: [id])
   univer_name String
   abiturient_id String?
+  type String?
   objects Json?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model universities {

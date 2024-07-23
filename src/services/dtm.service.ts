@@ -70,59 +70,73 @@ function extractApplicants(html: any, id: string) {
     subjects,
   };
 }
-const checkUser = async (userId: string, universitet: string) => {
-  const userDatas: any = await getFetchData(userId);
-  console.log(userDatas);
 
-  if (userDatas.applicants.length === 0) {
-    return {
-      message: "Bu foydalanuvchi mavjud emas",
-    };
-  }
+export const checkUser = async (
+  userId: string,
+  universitet: string,
+  page: number = 1,
+  type: "grant" | "contract" = "grant",
+  data?: any
+) => {
+  try {
+    const itemsPerPage = 4;
+    const skip = (page - 1) * itemsPerPage;
+    let userDatas = data;
+    if (!data) {
+      userDatas = await getFetchData(userId);
+    }
+    // console.log(userDatas);
 
-  if (userDatas.applicants[0].score === "Qiymatlanmagan!") {
-    return {
-      message: "Sizning balingiz qiymatlanmagan",
-    };
-  }
+    if (userDatas.applicants.length === 0) {
+      return {
+        message: "Bu foydalanuvchi mavjud emas",
+      };
+    }
 
-  const userBall = userDatas?.applicants[0];
-  const subjectOne = userDatas.subjects.firstSubject;
-  const subjectTwo = userDatas.subjects.secondSubject;
-  const lang =
-    userDatas.subjects.language === "1"
-      ? "uz"
-      : userDatas.subjects.language === "2"
-      ? "ru"
-      : "en";
+    if (userDatas.applicants[0].score === "Qiymatlanmagan!") {
+      return {
+        message: "Sizning balingiz qiymatlanmagan",
+      };
+    }
 
-  const universities = await prisma.universities.findFirst({
-    where: {
-      name: universitet,
-    },
-  });
+    const userBall = userDatas?.applicants[0];
+    const subjectOne = userDatas.subjects.firstSubject;
+    const subjectTwo = userDatas.subjects.secondSubject;
+    const lang =
+      userDatas.subjects.language === "1"
+        ? "uz"
+        : userDatas.subjects.language === "2"
+        ? "ru"
+        : "en";
 
-  const direction = await prisma.direction.findMany({
-    where: {
-      first_Science: {
-        name: subjectOne,
+    const universities = await prisma.universities.findFirst({
+      where: {
+        name: universitet,
       },
-      second_Science: {
-        name: subjectTwo,
+    });
+
+    const direction = await prisma.direction.findMany({
+      where: {
+        first_Science: {
+          name: subjectOne,
+        },
+        second_Science: {
+          name: subjectTwo,
+        },
       },
-    },
-  });
+    });
 
-  if (direction?.length === 0) {
-    return {
-      message: "Direction not found",
-    };
-  }
+    if (direction?.length === 0) {
+      return {
+        message: "Direction not found",
+      };
+    }
 
-  const directionId = direction?.map((item) => item.id);
+    const directionId = direction?.map((item) => item.id);
 
-  const general = await prisma.general.findMany({
-    where: {
+    const userScore = Number(userBall.score.replace(",", "."));
+
+    const whereClause: any = {
       direction_id: {
         in: directionId,
       },
@@ -130,30 +144,51 @@ const checkUser = async (userId: string, universitet: string) => {
       lang: {
         location: lang,
       },
-      OR: [
-        {
-          grandBall: {
-            lte: Number(userBall.score.replace(",", ".")),
-          },
-        },
-        {
-          // kontraktBall: {
-          //   lte: Number(userBall.score.replace(",", ".")),
-          // },
-        },
-      ],
-    },
+    };
 
-    include: {
-      direction: true,
-      universities: true,
-      lang: true,
-      type: true,
-    },
-  });
+    if (type === "grant") {
+      whereClause["grandBall"] = { lte: userScore };
+      whereClause["type"] = { name: "Kunduzgi" };
+    } else {
+      whereClause["kontraktBall"] = { lte: userScore };
+      // whereClause["OR"] = [
+      //   // { grandBall: { gt: userScore } },
+      //   // { type: { name: { not: "Kunduzgi" } } },
+      // ];
+    }
 
-  return {
-    general,
-    ...userDatas,
-  };
+    const [general, generalCount] = await Promise.all([
+      prisma.general.findMany({
+        where: whereClause,
+        skip: skip,
+        take: itemsPerPage,
+        include: {
+          direction: true,
+          universities: true,
+          lang: true,
+          type: true,
+        },
+        orderBy:
+          type === "grant" ? { grandBall: "desc" } : { kontraktBall: "desc" },
+      }),
+      prisma.general.count({
+        where: whereClause,
+      }),
+    ]);
+
+    console.log(general.length, generalCount, type);
+
+    return {
+      general,
+      ...userDatas,
+      count: generalCount,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "xatolik yuz berdi",
+    };
+  }
 };
+
+// checkUser("4869591", "Toshkent axborot texnologiyalari universiteti", 1);

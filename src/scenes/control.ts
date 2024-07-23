@@ -17,7 +17,4 @@ scene.hears("⚖️ Kirish imkoniyatingizni baholash", async (ctx: any) => {
   return await ctx.scene.enter("universities");
 });
 
-scene.hears("Admin", async (ctx) => {
-  ctx.reply("Admin");
-});
 export default scene;
