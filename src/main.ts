@@ -1,6 +1,7 @@
 require("dotenv").config();
 import { Context, Middleware } from "telegraf";
 import { SceneContext } from "telegraf/typings/scenes";
+import prisma from "../prisma/prisma";
 import bot from "./core/bot";
 import session from "./core/session";
 import stage from "./scenes/index";
@@ -41,6 +42,48 @@ bot.catch(async (err: any, ctx) => {
 
   console.log(err);
   console.log(`Ooops, encountered an error for ${ctx}`, err);
+});
+
+bot.on("inline_query", async (ctx: any) => {
+  console.log(ctx.inlineQuery);
+  const query = ctx.inlineQuery.query.trim();
+  const chatType = ctx.inlineQuery?.chat_type;
+  console.log(chatType);
+  if (chatType !== "sender") return;
+
+  const university = await prisma.universities.findMany({
+    where: {
+      name: {
+        contains: query,
+        mode: "insensitive", // Katta-kichik harflarni hisobga olmaslik uchun
+      },
+    },
+    take: 10, // Faqat 10 ta natija qaytaradi
+  });
+  const results = university.map((uni) => {
+    return {
+      type: "article",
+      id: uni.id,
+      title: uni.name,
+      description: uni.name,
+      thumb_url: "https://i.postimg.cc/8Pkb3Hc7/photo-2024-07-23-13-45-26.jpg",
+      input_message_content: {
+        message_text: uni.name,
+      },
+    };
+  });
+
+  // [
+  //   {
+  //     type: "article",
+  //     id: "1",
+  //     title: "Test",
+  //     input_message_content: {
+  //       message_text: "Test",
+  //     },
+  //   },
+  // ]
+  await ctx.answerInlineQuery(results);
 });
 botStart(bot);
 

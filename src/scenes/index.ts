@@ -1,6 +1,8 @@
 const { Scenes } = require("telegraf");
+import abitur from "./abiturient";
 import control from "./control";
 import start from "./start";
-const stage = new Scenes.Stage([start, control]);
+import univer from "./universities";
+const stage = new Scenes.Stage([start, control, univer, abitur]);
 
 export default stage;

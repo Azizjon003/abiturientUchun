@@ -3,7 +3,7 @@ import enabled from "../utils/enabled";
 import { keyboards } from "../utils/keyboards";
 const scene = new Scenes.BaseScene("start");
 
-export let keyboard = [["Start"]];
+export let keyboard = [["⚖️ Kirish imkoniyatingizni baholash"], ["Yordam 🆘"]];
 export let admin_keyboard = [["Admin"]];
 
 scene.enter(async (ctx: any) => {
@@ -16,7 +16,20 @@ scene.enter(async (ctx: any) => {
   if (enable === "one" || enable === "four") {
     ctx.telegram.sendMessage(
       user_id,
-      `Assalomu alaykum!\nYangi Taqdimot tugmasini bosib taqdimot yaratishni boshlashingiz mumkin!`,
+      `Assalomu alaykum, aziz abituriyent! 👋
+
+Oliy ta'lim muassasalariga kirish imtihonlari natijalarini tahlil qiluvchi botimizga xush kelibsiz. 🎓
+
+Bu bot sizga quyidagi imkoniyatlarni taqdim etadi:
+1. O'tgan yilgi qabul ballari bilan taqqoslash 📊
+2. Erishgan ballaringizga ko'ra sizga mos yo'nalishlarni aniqlash 🔍
+3. Kirish imkoniyatingizni baholash ⚖️
+
+Boshlash uchun, iltimos, quyidagi ma'lumotlarni kiriting:
+- AbituriyentId raqamingizni 🆔 (Biz sizning balingiz va yo'nalishingizni aniqlash uchun kerak bo'ladi)
+- Qiziqqan OTMni tanlang 🏫
+
+Omad tilaymiz! 🍀🌟`,
       keyboards(keyboard)
     );
 

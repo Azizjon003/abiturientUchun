@@ -25,8 +25,94 @@ model User {
   name      String?
   role      RoleEnum @default(USER)
   telegram_id String @unique
+  requests request[]
   isActive  Boolean @default(true)
-working      Boolean @default(false)
+  working      Boolean @default(false)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+}
+
+
+
+model request {
+  id String  @id @default(uuid())
+  user_id String
+  user User @relation(fields: [user_id], references: [id])
+  univer_name String
+  abiturient_id String?
+  objects Json?
+}
+
+model universities {
+  id       Int      @id @default(autoincrement())
+  name      String
+  location  String
+  type type[]
+  lang lang[]
+  general general[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model  type {
+  id Int    @id @default(autoincrement())
+  name String
+  location String
+  univer_id Int
+  general general[]
+  universities universities @relation(fields: [univer_id], references: [id])
+}
+model lang {
+  id Int @id @default(autoincrement())
+  name String
+  location String
+  univer_id Int
+  general general[]
+
+  universities universities @relation(fields: [univer_id], references: [id])
+}
+model years {
+  id Int @id @default(autoincrement())
+  name String
+  general general[]
+}
+
+
+model Science {
+  id               Int         @id @default(autoincrement())
+  name             String      @unique
+  code             String     
+  first_direction  Direction[] @relation("FirstDirection")
+  second_direction Direction[] @relation("SecondDirection")
+}
+
+model Direction {
+  id             Int     @id @default(autoincrement())
+  name           String
+  code           String @unique
+  first_science  Int
+  second_science Int
+  first_Science  Science @relation("FirstDirection", fields: [first_science], references: [id])
+  second_Science Science @relation("SecondDirection", fields: [second_science], references: [id])
+  general general[]
+}
+
+
+model general {
+  id             Int     @id @default(autoincrement())
+  univer_id Int
+  direction_id Int
+  lang_id Int
+  year_id Int
+  type_id Int
+
+  universities universities @relation(fields: [univer_id], references: [id])
+  direction Direction @relation(fields: [direction_id], references: [id])
+  lang lang @relation(fields: [lang_id], references: [id])
+  years years @relation(fields: [year_id], references: [id])
+  type type @relation(fields: [type_id], references: [id])
+  grandBall Float
+  kontraktBall Float
+  grandPeople Int
+  kontraktPeople Int
 }
