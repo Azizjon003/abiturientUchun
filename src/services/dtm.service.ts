@@ -80,7 +80,7 @@ const checkUser = async (userId: string, universitet: string) => {
     };
   }
 
-  if (userDatas.applicants[0].score === "0") {
+  if (userDatas.applicants[0].score === "Qiymatlanmagan!") {
     return {
       message: "Sizning balingiz qiymatlanmagan",
     };
@@ -154,6 +154,6 @@ const checkUser = async (userId: string, universitet: string) => {
 
   return {
     general,
-    userBall,
+    ...userDatas,
   };
 };
