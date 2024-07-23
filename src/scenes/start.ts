@@ -33,6 +33,8 @@ Boshlash uchun, iltimos, quyidagi ma'lumotlarni kiriting:
 - AbituriyentId raqamingizni 🆔 (Biz sizning balingiz va yo'nalishingizni aniqlash uchun kerak bo'ladi)
 - Qiziqqan OTMni tanlang 🏫
 
+
+Biz ma'lumotlarni tahlil qilish uchun mandat.uzbmb.uz saytidan foydalanamiz.Ma'lumotlar tahlili 2023-yildagi kirish ballari bilan amalga oshiriladi.
 Omad tilaymiz! 🍀🌟`,
       keyboards(keyboard)
     );
