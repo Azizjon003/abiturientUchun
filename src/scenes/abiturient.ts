@@ -263,7 +263,7 @@ async function analyzeAndSendResults(
   let initialMessage = `🎓 Sizning balingiz: ${userScore} \n AbituriyentId: ${id} \n 1-fan ${subjects.firstSubject} \n 2-fan ${subjects.secondSubject}\n\n`;
 
   if (admissions.length > 0) {
-    initialMessage += `Siz ${admissions.length} ta yo'nalishga ${
+    initialMessage += `Siz ${itemCount} ta yo'nalishga ${
       type === "contract" ? "Kontrakt" : "Grant"
     } asosida kirishingiz mumkin.\n`;
     await ctx.reply(initialMessage);
