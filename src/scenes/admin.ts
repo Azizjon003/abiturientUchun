@@ -1,4 +1,5 @@
 import { Scenes } from "telegraf";
+import prisma from "../../prisma/prisma";
 const scene = new Scenes.BaseScene("admin");
 scene.hears(["/start", "Bosh menyu"], async (ctx: any) => {
   return await ctx.scene.enter("admin");
@@ -19,7 +20,7 @@ scene.on("message", async (ctx: any) => {
     const broadcastMessage = ctx.message.text;
     // Barcha foydalanuvchilarga xabar yuborish logikasi
     // Bu yerda ma'lumotlar bazangizdan barcha foydalanuvchilar ro'yxatini olishingiz kerak
-    const allUsers: any = []; // Bu ro'yxatni o'zingizning ma'lumotlar bazangizdan to'ldirishingiz kerak
+    const allUsers: any = await prisma.user.findMany(); // Bu ro'yxatni o'zingizning ma'lumotlar bazangizdan to'ldirishingiz kerak
 
     let successCount = 0;
     let failCount = 0;
