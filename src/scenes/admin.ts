@@ -1,5 +1,5 @@
 import { Scenes } from "telegraf";
-const scene = new Scenes.BaseScene("type");
+const scene = new Scenes.BaseScene("admin");
 scene.hears(["/start", "Bosh menyu"], async (ctx: any) => {
   return await ctx.scene.enter("admin");
 });
