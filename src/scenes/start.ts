@@ -8,7 +8,7 @@ export let keyboard = [
   ["Yordam 🆘"],
   ["Mandatni tahlil qilish"],
 ];
-export let admin_keyboard = [["Admin"]];
+export let admin_keyboard = [["Admin"], ["Foydalanuvchilarga xabar yuborish"]];
 
 scene.enter(async (ctx: any) => {
   const user_id = ctx.from?.id;
