@@ -14,7 +14,7 @@ scene.hears("Foydalanuvchilarga xabar yuborish", async (ctx: any) => {
 const sleep = async (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-scene.on("text", async (ctx: any) => {
+scene.on("message", async (ctx: any) => {
   if (ctx.scene.session.awaitingBroadcastMessage) {
     const broadcastMessage = ctx.message.text;
     // Barcha foydalanuvchilarga xabar yuborish logikasi
