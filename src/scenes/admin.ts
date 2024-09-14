@@ -27,12 +27,15 @@ scene.on("message", async (ctx: any) => {
 
     for (const userId of allUsers) {
       try {
-        await ctx.telegram.sendMessage(userId, broadcastMessage);
+        await ctx.telegram.sendMessage(userId.telegram_id, broadcastMessage);
         successCount++;
         await sleep(1000); // Botni qulay ishlash uchun 1 sekundlik faol kut
       } catch (error) {
         failCount++;
-        console.error(`Failed to send message to user ${userId}:`, error);
+        console.error(
+          `Failed to send message to user ${userId.telegram_id}:`,
+          error
+        );
       }
     }
 
